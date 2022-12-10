@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "This repository is the part of nodejs-assignments https://github.com/AlreadyBored/nodejs-assignments",
   "type": "module",
-  "scripts": {},
+  "scripts": {
+    "start": "node src/index.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Vladson12/node-file-manager.git"
