@@ -1,4 +1,5 @@
 import { parseArg } from "./utils/parseArg.js";
+import os from "os";
 
 let username;
 
@@ -11,4 +12,8 @@ try {
   process.exit(0);
 }
 
-console.log(`Welcome to the File Manager, ${username}!`);
+console.log(`Welcome to the File Manager, ${username}!\n`);
+
+let currentFolder = os.homedir();
+
+console.log(`You're currently in ${currentFolder}`);
