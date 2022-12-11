@@ -1,10 +1,11 @@
 import { parseArg } from "./utils/parseArg.js";
-import os from "os";
-
-let username;
+import { homedir, EOL } from "os";
+import { env, chdir, cwd, stdin, stdout, exit } from "process";
+import { pipeline } from "stream/promises";
+import { handle } from "./handleCommand.js";
 
 try {
-  username = parseArg("username");
+  env.USERNAME = parseArg("username");
 } catch (err) {
   console.log(
     "Please try again by passing username correclty in following way: --username=your_username"
@@ -12,8 +13,17 @@ try {
   process.exit(0);
 }
 
-console.log(`Welcome to the File Manager, ${username}!\n`);
+console.log(`${EOL}Welcome to the File Manager, ${env.USERNAME}!${EOL}`);
+chdir(homedir());
+console.log(`You're currently in ${cwd()}`);
 
-let currentFolder = os.homedir();
+pipeline(stdin, handle, stdout);
 
-console.log(`You're currently in ${currentFolder}`);
+const exitEvents = ["beforeexit", "SIGINT"];
+
+exitEvents.forEach((exitEvent) => {
+  process.on(exitEvent, () => {
+    console.log(`${EOL}Thank you for using File Manager, ${env.USERNAME}!`);
+    exit();
+  });
+});
