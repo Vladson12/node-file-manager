@@ -11,7 +11,6 @@ export const handle = async (commandLine) => {
   switch (command) {
     case commands.exit:
       process.exit();
-      break;
     case commands.up:
       moveUp();
       break;
@@ -19,7 +18,7 @@ export const handle = async (commandLine) => {
       await add(args);
       break;
     default:
-      throw new Error(`${command}: command not found`);
+      throw new Error(`Invalid input`);
   }
 };
 
