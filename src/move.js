@@ -30,7 +30,7 @@ export const cd = (args) => {
   }
 };
 
-export const list = async () => {
+export const ls = async () => {
   try {
     const content = await fs.readdir(cwd());
     const resArr = [];
