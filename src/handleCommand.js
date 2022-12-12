@@ -1,28 +1,26 @@
 import { Transform } from "stream";
 import { moveUp } from "./move.js";
-import { EOL } from "os";
-import { cwd } from "process";
+import { add } from "./fileOperations.js";
+import { parseFileManagerCommandAndArgs } from "./utils/parseArg.js";
 
-export const handle = new Transform({
-  transform(chunk, encoding, callback) {
-    const [command, ...args] = chunk.toString().trim().split(" ");
+const commands = { exit: ".exit", up: "up", add: "add" };
 
-    try {
-      switch (command) {
-        case ".exit":
-          process.emit("beforeexit");
-          break;
-        case "up":
-          moveUp();
-          break;
-        default:
-          throw new Error(`${command}: command not found`);
-      }
-    } catch (err) {
-      console.log(`Operation failed: ${err.message}`);
-    }
+export const handle = async (commandLine) => {
+  const [command, ...args] = parseFileManagerCommandAndArgs(commandLine);
 
-    console.log(`${EOL}You are currently in ${cwd()}`);
-    callback();
-  },
-});
+  switch (command) {
+    case commands.exit:
+      process.exit();
+      break;
+    case commands.up:
+      moveUp();
+      break;
+    case "add":
+      await add(args);
+      break;
+    default:
+      throw new Error(`${command}: command not found`);
+  }
+};
+
+const validate = (command) => {};
