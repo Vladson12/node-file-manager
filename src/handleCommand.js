@@ -1,5 +1,4 @@
-import { Transform } from "stream";
-import { moveUp, cd } from "./move.js";
+import { moveUp, cd, list } from "./move.js";
 import { add } from "./fileOperations.js";
 import { parseFileManagerCommandAndArgs } from "./utils/parseArg.js";
 
@@ -17,6 +16,9 @@ export const handle = async (commandLine) => {
     case "cd":
       cd(args);
       break;
+    case "list":
+      await list();
+      break;
     case "add":
       await add(args);
       break;
@@ -24,5 +26,3 @@ export const handle = async (commandLine) => {
       throw new Error(`Invalid input`);
   }
 };
-
-const validate = (command) => {};
