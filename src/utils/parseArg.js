@@ -1,3 +1,5 @@
+import { normalize } from "path";
+
 export const parseArg = (argKey) => {
   const args = process.argv.slice(2);
   const desiredArg = args.find((elem) => elem.startsWith(`--${argKey}=`));
@@ -83,7 +85,7 @@ export const parseFileManagerCommandAndArgs = (line) => {
 
   if (!args[0]) throw new Error("Invalid input");
 
-  return args.map((arg) => arg.replace(/["']/g, ""));
+  return args.map((arg) => normalize(arg.replace(/["']/g, "")));
 };
 
 // parseFileManagerCommandAndArgs("        node     'a'");

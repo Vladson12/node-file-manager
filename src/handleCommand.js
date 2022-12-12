@@ -1,5 +1,5 @@
 import { Transform } from "stream";
-import { moveUp } from "./move.js";
+import { moveUp, cd } from "./move.js";
 import { add } from "./fileOperations.js";
 import { parseFileManagerCommandAndArgs } from "./utils/parseArg.js";
 
@@ -13,6 +13,9 @@ export const handle = async (commandLine) => {
       process.exit();
     case commands.up:
       moveUp();
+      break;
+    case "cd":
+      cd(args);
       break;
     case "add":
       await add(args);
