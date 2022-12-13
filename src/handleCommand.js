@@ -1,5 +1,5 @@
 import { moveUp, cd, ls } from "./move.js";
-import { add, cat, rn, cp } from "./fileOperations.js";
+import { add, cat, rn, cp, mv } from "./fileOperations.js";
 import { parseFileManagerCommandAndArgs } from "./utils/parseArg.js";
 
 export const handle = async (commandLine) => {
@@ -8,7 +8,7 @@ export const handle = async (commandLine) => {
   switch (command) {
     case ".exit":
       process.exit();
-    case ".up":
+    case "up":
       moveUp();
       break;
     case "cd":
@@ -28,6 +28,9 @@ export const handle = async (commandLine) => {
       break;
     case "cp":
       await cp(args);
+      break;
+    case "mv":
+      await mv(args);
       break;
     default:
       throw new Error(`Invalid input`);

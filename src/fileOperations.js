@@ -1,7 +1,7 @@
 import { resolve, basename } from "path";
 import { cwd } from "process";
 import fs from "fs";
-import { rename, access } from "fs/promises";
+import { rename, access, writeFile, rm } from "fs/promises";
 import { pipeline } from "stream/promises";
 
 export const add = async (files) => {
@@ -14,18 +14,9 @@ export const add = async (files) => {
 
   try {
     const promises = filePaths.map((filePath) =>
-      fs.writeFile(filePath, "", { flag: "wx" })
+      writeFile(filePath, "", { flag: "wx" })
     );
-    const results = await Promise.allSettled(promises);
-    const errors = [];
-    results.forEach((res) => {
-      if (res.status === "rejected") {
-        errors.push(res.reason);
-      }
-    });
-    if (errors.length) {
-      throw new Error(errors.toString());
-    }
+    await Promise.allSettled(promises);
   } catch (err) {
     throw new Error(`Operation failed`);
   }
@@ -64,6 +55,8 @@ export const rn = async (args) => {
 
   const resolvedFilePath = resolve(cwd(), filePath);
   const resolvedNewPath = resolve(resolvedFilePath, "..", newFileName);
+  console.log(resolvedFilePath);
+  console.log(resolvedNewPath);
 
   try {
     await access(resolvedNewPath);
@@ -101,6 +94,35 @@ export const cp = async (args) => {
 
     await pipeline(readStream, writeStream);
   } catch (err) {
+    console.log(err);
+    throw new Error("Operation failed");
+  }
+};
+
+export const mv = async (args) => {
+  if (!args || args.length !== 2) {
+    throw new Error("Invalid input");
+  }
+  const [filePath, newDirPath] = args;
+  if (!filePath || !newDirPath) throw new Error("Invalid input");
+
+  try {
+    const resolvedFilePath = resolve(cwd(), filePath);
+    const resolvedNewDirPath = resolve(
+      cwd(),
+      newDirPath,
+      basename(resolvedFilePath)
+    );
+
+    if (resolvedFilePath === resolvedNewDirPath) return;
+
+    const readStream = fs.createReadStream(resolvedFilePath);
+    const writeStream = fs.createWriteStream(resolvedNewDirPath);
+
+    await pipeline(readStream, writeStream);
+    await rm(resolvedFilePath);
+  } catch (err) {
+    console.log(err);
     throw new Error("Operation failed");
   }
 };

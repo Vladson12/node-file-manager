@@ -36,9 +36,13 @@ export const ls = async () => {
     const resArr = [];
 
     for (const item of content) {
-      const name = path.basename(item);
-      const type = contentType(await fs.stat(resolve(cwd(), item)));
-      resArr.push({ name, type });
+      try {
+        const name = path.basename(item);
+        const type = contentType(await fs.stat(resolve(cwd(), item)));
+        resArr.push({ name, type });
+      } catch {
+        continue;
+      }
     }
 
     resArr.sort((a, b) => {
