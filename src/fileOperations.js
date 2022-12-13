@@ -1,8 +1,8 @@
-import { resolve } from "path";
+import { resolve, basename } from "path";
 import { cwd } from "process";
 import fs from "fs";
-import { EOL } from "os";
 import { rename, access } from "fs/promises";
+import { pipeline } from "stream/promises";
 
 export const add = async (files) => {
   let filePaths;
@@ -56,6 +56,9 @@ export const cat = async (files) => {
 };
 
 export const rn = async (args) => {
+  if (!args || args.length !== 2) {
+    throw new Error("Invalid input");
+  }
   const [filePath, newFileName] = args;
   if (!filePath || !newFileName) throw new Error("Invalid input");
 
@@ -73,5 +76,31 @@ export const rn = async (args) => {
         });
     });
   }
-  throw new Error("Operation failed!!!");
+  throw new Error("Operation failed");
+};
+
+export const cp = async (args) => {
+  if (!args || args.length !== 2) {
+    throw new Error("Invalid input");
+  }
+  const [filePath, newDirPath] = args;
+  if (!filePath || !newDirPath) throw new Error("Invalid input");
+
+  try {
+    const resolvedFilePath = resolve(cwd(), filePath);
+    const resolvedNewDirPath = resolve(
+      cwd(),
+      newDirPath,
+      basename(resolvedFilePath)
+    );
+
+    if (resolvedFilePath === resolvedNewDirPath) return;
+
+    const readStream = fs.createReadStream(resolvedFilePath);
+    const writeStream = fs.createWriteStream(resolvedNewDirPath);
+
+    await pipeline(readStream, writeStream);
+  } catch (err) {
+    throw new Error("Operation failed");
+  }
 };
