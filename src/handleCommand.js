@@ -1,6 +1,7 @@
 import { moveUp, cd, ls } from "./move.js";
 import { add, cat, rn, cp, mv, remove } from "./fileOperations.js";
 import { parseFileManagerCommandAndArgs } from "./utils/parseArg.js";
+import { os } from "./osOperations.js";
 
 export const handle = async (commandLine) => {
   const [command, ...args] = parseFileManagerCommandAndArgs(commandLine);
@@ -34,6 +35,9 @@ export const handle = async (commandLine) => {
       break;
     case "rm":
       await remove(args);
+      break;
+    case "os":
+      os(args[0]);
       break;
     default:
       throw new Error(`Invalid input`);
