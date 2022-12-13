@@ -1,5 +1,5 @@
-import { moveUp, cd, ls } from "./move.js";
-import { add, cat, rn, cp, mv, remove } from "./fileOperations.js";
+import { moveUp, cd } from "./moveOperations.js";
+import { add, cat, rn, cp, mv, remove, ls } from "./fileOperations.js";
 import { parseFileManagerCommandAndArgs } from "./utils/parse.js";
 import { os } from "./osOperations.js";
 
