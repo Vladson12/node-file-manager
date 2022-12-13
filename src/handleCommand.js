@@ -1,6 +1,6 @@
 import { moveUp, cd, ls } from "./move.js";
 import { add, cat, rn, cp, mv, remove } from "./fileOperations.js";
-import { parseFileManagerCommandAndArgs } from "./utils/parseArg.js";
+import { parseFileManagerCommandAndArgs } from "./utils/parse.js";
 import { os } from "./osOperations.js";
 
 export const handle = async (commandLine) => {

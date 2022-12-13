@@ -1,4 +1,4 @@
-import { parseArg } from "./utils/parseArg.js";
+import { parseArg } from "./utils/parse.js";
 import { homedir, EOL } from "os";
 import { env, chdir, cwd, stdin, stdout, exit } from "process";
 import { handle } from "./handleCommand.js";
