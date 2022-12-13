@@ -1,5 +1,5 @@
 import { moveUp, cd, ls } from "./move.js";
-import { add, cat, rn, cp, mv } from "./fileOperations.js";
+import { add, cat, rn, cp, mv, remove } from "./fileOperations.js";
 import { parseFileManagerCommandAndArgs } from "./utils/parseArg.js";
 
 export const handle = async (commandLine) => {
@@ -31,6 +31,9 @@ export const handle = async (commandLine) => {
       break;
     case "mv":
       await mv(args);
+      break;
+    case "rm":
+      await remove(args);
       break;
     default:
       throw new Error(`Invalid input`);

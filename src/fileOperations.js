@@ -1,4 +1,4 @@
-import { resolve, basename } from "path";
+import path, { resolve, basename } from "path";
 import { cwd } from "process";
 import fs from "fs";
 import { rename, access, writeFile, rm } from "fs/promises";
@@ -125,4 +125,27 @@ export const mv = async (args) => {
     console.log(err);
     throw new Error("Operation failed");
   }
+};
+
+export const remove = async (files) => {
+  return new Promise(async (resolve, reject) => {
+    if (!files || files.length !== 1) {
+      return reject("Invalid input");
+    }
+
+    let filePath;
+    try {
+      filePath = path.resolve(cwd(), files[0]);
+    } catch (err) {
+      return reject(new Error("Invalid input"));
+    }
+
+    try {
+      await rm(filePath);
+    } catch (err) {
+      return reject(new Error("Operation failed"));
+    }
+
+    return resolve();
+  });
 };
