@@ -1,16 +1,14 @@
 import { moveUp, cd, ls } from "./move.js";
-import { add } from "./fileOperations.js";
+import { add, cat } from "./fileOperations.js";
 import { parseFileManagerCommandAndArgs } from "./utils/parseArg.js";
-
-const commands = { exit: ".exit", up: "up", add: "add" };
 
 export const handle = async (commandLine) => {
   const [command, ...args] = parseFileManagerCommandAndArgs(commandLine);
 
   switch (command) {
-    case commands.exit:
+    case ".exit":
       process.exit();
-    case commands.up:
+    case ".up":
       moveUp();
       break;
     case "cd":

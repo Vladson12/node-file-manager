@@ -10,7 +10,7 @@ try {
   console.log(
     "Please try again by passing username correclty in following way: --username=your_username"
   );
-  process.exit(0);
+  exit(0);
 }
 
 const rl = readline.createInterface({
@@ -25,7 +25,7 @@ console.log(`You're currently in ${cwd()}`);
 rl.on("line", (command) => {
   handle(command)
     .catch((err) => console.log(err.message))
-    .then((data) => console.log(`${EOL}You're currently in ${cwd()}`));
+    .finally(() => console.log(`${EOL}You're currently in ${cwd()}`));
 });
 
 process.on("exit", () => {
