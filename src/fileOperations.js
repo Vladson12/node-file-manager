@@ -2,6 +2,7 @@ import { resolve } from "path";
 import { cwd } from "process";
 import fs from "fs";
 import { EOL } from "os";
+import { rename, access } from "fs/promises";
 
 export const add = async (files) => {
   let filePaths;
@@ -52,4 +53,25 @@ export const cat = async (files) => {
       });
     });
   });
+};
+
+export const rn = async (args) => {
+  const [filePath, newFileName] = args;
+  if (!filePath || !newFileName) throw new Error("Invalid input");
+
+  const resolvedFilePath = resolve(cwd(), filePath);
+  const resolvedNewPath = resolve(resolvedFilePath, "..", newFileName);
+
+  try {
+    await access(resolvedNewPath);
+  } catch (err) {
+    return new Promise((resolve, reject) => {
+      rename(resolvedFilePath, resolvedNewPath)
+        .then(() => resolve())
+        .catch((err) => {
+          reject(new Error("Operation failed"));
+        });
+    });
+  }
+  throw new Error("Operation failed!!!");
 };
