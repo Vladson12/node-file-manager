@@ -1,6 +1,6 @@
 import { normalize } from "path";
 
-export const parseArg = (argKey) => {
+export const parseNodeArg = (argKey) => {
   const args = process.argv.slice(2);
   const desiredArg = args.find((elem) => elem.startsWith(`--${argKey}=`));
   if (!desiredArg) throw new Error("Arg not found!");

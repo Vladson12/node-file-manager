@@ -1,11 +1,11 @@
-import { parseArg } from "./utils/parse.js";
+import { parseNodeArg } from "./utils/parse.js";
 import { homedir, EOL } from "os";
 import { env, chdir, cwd, stdin, stdout, exit } from "process";
 import { handle } from "./handleCommand.js";
 import readline from "readline";
 
 try {
-  env.USERNAME = parseArg("username");
+  env.USERNAME = parseNodeArg("username");
 } catch (err) {
   console.log(
     "Please try again by passing username correclty in following way: --username=your_username"
@@ -29,5 +29,5 @@ rl.on("line", (command) => {
 });
 
 process.on("exit", () => {
-  console.log(`Thank you for using File Manager, ${env.USERNAME}!`);
+  console.log(`${EOL}Thank you for using File Manager, ${env.USERNAME}!`);
 });

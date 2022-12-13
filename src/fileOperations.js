@@ -3,7 +3,7 @@ import { cwd } from "process";
 import fs from "fs";
 import { rename, access, writeFile, rm } from "fs/promises";
 import { pipeline } from "stream/promises";
-import fs from "fs/promises";
+import fsProm from "fs/promises";
 import { contentType } from "./utils/fsUtil.js";
 
 export const add = async (files) => {
@@ -154,13 +154,13 @@ export const remove = async (files) => {
 
 export const ls = async () => {
   try {
-    const content = await fs.readdir(cwd());
+    const content = await fsProm.readdir(cwd());
     const resArr = [];
 
     for (const item of content) {
       try {
         const name = path.basename(item);
-        const type = contentType(await fs.stat(resolve(cwd(), item)));
+        const type = contentType(await fsProm.stat(resolve(cwd(), item)));
         resArr.push({ name, type });
       } catch {
         continue;

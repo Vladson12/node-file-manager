@@ -2,6 +2,7 @@ import { moveUp, cd } from "./moveOperations.js";
 import { add, cat, rn, cp, mv, remove, ls } from "./fileOperations.js";
 import { parseFileManagerCommandAndArgs } from "./utils/parse.js";
 import { os } from "./osOperations.js";
+import { hashFile } from "../hash.js";
 
 export const handle = async (commandLine) => {
   const [command, ...args] = parseFileManagerCommandAndArgs(commandLine);
@@ -38,6 +39,9 @@ export const handle = async (commandLine) => {
       break;
     case "os":
       os(args[0]);
+      break;
+    case "hash":
+      await hashFile(args[0]);
       break;
     default:
       throw new Error(`Invalid input`);
