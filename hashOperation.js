@@ -4,13 +4,7 @@ import fs from "fs";
 import { cwd } from "process";
 
 export const hashFile = async (pathToFile) => {
-  let resolvedPathToFile;
-  try {
-    resolvedPathToFile = resolve(cwd(), pathToFile);
-  } catch (err) {
-    throw new Error("Invalid input");
-  }
-
+  const resolvedPathToFile = resolve(cwd(), pathToFile);
   const readStream = fs.createReadStream(resolvedPathToFile);
   const hash = createHash("sha256");
 
