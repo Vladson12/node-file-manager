@@ -3,6 +3,7 @@ import { add, cat, rn, cp, mv, remove, ls } from "./fileOperations.js";
 import { parseFileManagerCommandAndArgs } from "./utils/parse.js";
 import { os } from "./osOperations.js";
 import { hashFile } from "../hash.js";
+import { compress, decompress } from "../archiveOperations.js";
 
 export const handle = async (commandLine) => {
   const [command, ...args] = parseFileManagerCommandAndArgs(commandLine);
@@ -42,6 +43,12 @@ export const handle = async (commandLine) => {
       break;
     case "hash":
       await hashFile(args[0]);
+      break;
+    case "compress":
+      await compress(args);
+      break;
+    case "decompress":
+      await decompress(args);
       break;
     default:
       throw new Error(`Invalid input`);
