@@ -21,13 +21,11 @@ export const add = async (newFileName) => {
 };
 
 export const cat = async (pathToFile) => {
-  let resolvedPathToFile;
-  try {
-    resolvedPathToFile = resolve(cwd(), pathToFile);
-  } catch (err) {
-    console.log(err);
+  if (!pathToFile) {
     throw new Error("Invalid input");
   }
+
+  let resolvedPathToFile = resolve(cwd(), pathToFile);
 
   const readStream = fs.createReadStream(resolvedPathToFile, "utf-8");
 
