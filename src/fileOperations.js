@@ -21,26 +21,24 @@ export const add = async (newFileName) => {
   }
 };
 
-export const cat = async (files) => {
-  let filePaths;
+export const cat = async (pathToFile) => {
+  let resolvedPathToFile;
   try {
-    filePaths = files.map((file) => resolve(cwd(), file));
+    resolvedPathToFile = resolve(cwd(), pathToFile);
   } catch (err) {
+    console.log(err);
     throw new Error("Invalid input");
   }
 
+  const readStream = fs.createReadStream(resolvedPathToFile, "utf-8");
+
   return new Promise((resolve, reject) => {
-    filePaths.forEach((filePath, index) => {
-      const readStream = fs.createReadStream(filePath, "utf-8");
-      readStream.on("data", (chunk) => {
-        console.log(chunk);
-      });
-      readStream.on("error", (err) => reject(new Error("Operation failed")));
-      readStream.on("end", () => {
-        if (index === filePaths.length - 1) {
-          resolve();
-        }
-      });
+    readStream.on("data", (chunk) => {
+      console.log(chunk);
+    });
+    readStream.on("error", (err) => reject(new Error("Operation failed")));
+    readStream.on("end", () => {
+      resolve();
     });
   });
 };

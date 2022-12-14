@@ -34,7 +34,7 @@ export const handle = async (commandLine) => {
       await add(...args);
       break;
     case "cat":
-      if (args.length === 0) {
+      if (args.length !== 1) {
         throw new Error("Invalid input");
       }
       await cat(...args);
