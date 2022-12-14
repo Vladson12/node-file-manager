@@ -48,23 +48,19 @@ export const cat = async (files) => {
   });
 };
 
-export const rn = async (args) => {
-  if (!args || args.length !== 2) {
-    throw new Error("Invalid input");
-  }
-  const [filePath, newFileName] = args;
-  if (!filePath || !newFileName) throw new Error("Invalid input");
+export const rn = async (pathTofile, newFilename) => {
+  if (!pathTofile || !newFilename) throw new Error("Invalid input");
 
-  const resolvedFilePath = resolve(cwd(), filePath);
-  const resolvedNewPath = resolve(resolvedFilePath, "..", newFileName);
-  console.log(resolvedFilePath);
+  const resolvedPathToFile = resolve(cwd(), pathTofile);
+  const resolvedNewPath = resolve(resolvedPathToFile, "..", newFilename);
+  console.log(resolvedPathToFile);
   console.log(resolvedNewPath);
 
   try {
     await access(resolvedNewPath);
   } catch (err) {
     return new Promise((resolve, reject) => {
-      rename(resolvedFilePath, resolvedNewPath)
+      rename(resolvedPathToFile, resolvedNewPath)
         .then(() => resolve())
         .catch((err) => {
           reject(new Error("Operation failed"));
@@ -74,25 +70,21 @@ export const rn = async (args) => {
   throw new Error("Operation failed");
 };
 
-export const cp = async (args) => {
-  if (!args || args.length !== 2) {
-    throw new Error("Invalid input");
-  }
-  const [filePath, newDirPath] = args;
-  if (!filePath || !newDirPath) throw new Error("Invalid input");
+export const cp = async (pathToFile, pathToNewDirectory) => {
+  if (!pathToFile || !pathToNewDirectory) throw new Error("Invalid input");
 
   try {
-    const resolvedFilePath = resolve(cwd(), filePath);
-    const resolvedNewDirPath = resolve(
+    const resolvedPathToFile = resolve(cwd(), pathToFile);
+    const resolvedPathToNewDirectory = resolve(
       cwd(),
-      newDirPath,
-      basename(resolvedFilePath)
+      pathToNewDirectory,
+      basename(resolvedPathToFile)
     );
 
-    if (resolvedFilePath === resolvedNewDirPath) return;
+    if (resolvedPathToFile === resolvedPathToNewDirectory) return;
 
-    const readStream = fs.createReadStream(resolvedFilePath);
-    const writeStream = fs.createWriteStream(resolvedNewDirPath);
+    const readStream = fs.createReadStream(resolvedPathToFile);
+    const writeStream = fs.createWriteStream(resolvedPathToNewDirectory);
 
     await pipeline(readStream, writeStream);
   } catch (err) {
@@ -101,49 +93,41 @@ export const cp = async (args) => {
   }
 };
 
-export const mv = async (args) => {
-  if (!args || args.length !== 2) {
-    throw new Error("Invalid input");
-  }
-  const [filePath, newDirPath] = args;
-  if (!filePath || !newDirPath) throw new Error("Invalid input");
+export const mv = async (pathToFile, pathToNewDirectory) => {
+  if (!pathToFile || !pathToNewDirectory) throw new Error("Invalid input");
 
   try {
-    const resolvedFilePath = resolve(cwd(), filePath);
-    const resolvedNewDirPath = resolve(
+    const resolvedPathToFile = resolve(cwd(), pathToFile);
+    const resolvedPathToNewDirectory = resolve(
       cwd(),
       newDirPath,
-      basename(resolvedFilePath)
+      basename(resolvedPathToFile)
     );
 
-    if (resolvedFilePath === resolvedNewDirPath) return;
+    if (resolvedPathToFile === resolvedPathToNewDirectory) return;
 
-    const readStream = fs.createReadStream(resolvedFilePath);
-    const writeStream = fs.createWriteStream(resolvedNewDirPath);
+    const readStream = fs.createReadStream(resolvedPathToFile);
+    const writeStream = fs.createWriteStream(resolvedPathToNewDirectory);
 
     await pipeline(readStream, writeStream);
-    await rm(resolvedFilePath);
+    await rm(resolvedPathToFile);
   } catch (err) {
     console.log(err);
     throw new Error("Operation failed");
   }
 };
 
-export const remove = async (files) => {
+export const remove = async (pathToFile) => {
   return new Promise(async (resolve, reject) => {
-    if (!files || files.length !== 1) {
-      return reject("Invalid input");
-    }
-
-    let filePath;
+    let resolvedPathToFile;
     try {
-      filePath = path.resolve(cwd(), files[0]);
+      resolvedPathToFile = path.resolve(cwd(), pathToFile);
     } catch (err) {
       return reject(new Error("Invalid input"));
     }
 
     try {
-      await rm(filePath);
+      await rm(resolvedPathToFile);
     } catch (err) {
       return reject(new Error("Operation failed"));
     }

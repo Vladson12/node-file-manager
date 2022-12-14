@@ -10,19 +10,16 @@ export const moveUp = () => {
   }
 };
 
-export const cd = (args) => {
-  if (args.length !== 1) {
-    throw new Error("Invalid input");
-  }
-  let dirPath;
+export const cd = (pathToDirectory) => {
+  let resolvedPathToDirectory;
   try {
-    dirPath = resolve(cwd(), args[0]);
+    resolvedPathToDirectory = resolve(cwd(), pathToDirectory);
   } catch (err) {
     throw new Error("Invalid input");
   }
 
   try {
-    chdir(dirPath);
+    chdir(resolvedPathToDirectory);
   } catch (err) {
     throw new Error("Operation failed");
   }

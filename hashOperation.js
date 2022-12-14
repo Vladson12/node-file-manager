@@ -3,15 +3,15 @@ import { createHash } from "crypto";
 import fs from "fs";
 import { cwd } from "process";
 
-export const hashFile = async (file) => {
-  let filePath;
+export const hashFile = async (pathToFile) => {
+  let resolvedPathToFile;
   try {
-    filePath = resolve(cwd(), file);
+    resolvedPathToFile = resolve(cwd(), pathToFile);
   } catch (err) {
     throw new Error("Invalid input");
   }
 
-  const readStream = fs.createReadStream(filePath);
+  const readStream = fs.createReadStream(resolvedPathToFile);
   const hash = createHash("sha256");
 
   return new Promise((resolve, reject) => {

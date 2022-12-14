@@ -1,3 +1,4 @@
+import { EOL } from "os";
 import { normalize } from "path";
 
 export const parseNodeArg = (argKey) => {
@@ -83,13 +84,7 @@ export const parseFileManagerCommandAndArgs = (line) => {
     }
   }
 
-  if (!args[0]) throw new Error("Invalid input");
+  if (args.length === 0) args.push(EOL);
 
   return args.map((arg) => normalize(arg.replace(/["']/g, "")));
 };
-
-// parseFileManagerCommandAndArgs("        node     'a'");
-// parseFileManagerCommandAndArgs(
-//   "        node     \"with spaces double quotes\"   withoutSpaces   'with spaces single quotes'"
-// );
-// parseFileManagerCommandAndArgs("");

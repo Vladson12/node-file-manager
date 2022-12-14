@@ -4,12 +4,7 @@ import { pipeline } from "stream/promises";
 import { resolve, basename, parse } from "path";
 import { cwd } from "process";
 
-export const compress = async (args) => {
-  if (!args || args.length !== 2) {
-    throw new Error("Invalid input");
-  }
-
-  const [pathToFile, pathToDestination] = args;
+export const compress = async (pathToFile, pathToDestination) => {
   if (!pathToFile || !pathToDestination) throw new Error("Invalid input");
 
   const resolvedPathToFile = resolve(cwd(), pathToFile);
@@ -33,12 +28,7 @@ export const compress = async (args) => {
   }
 };
 
-export const decompress = async (args) => {
-  if (!args || args.length !== 2) {
-    throw new Error("Invalid input");
-  }
-
-  const [pathToFile, pathToDestination] = args;
+export const decompress = async (pathToFile, pathToDestination) => {
   if (!pathToFile || !pathToDestination) throw new Error("Invalid input");
 
   const resolvedPathToFile = resolve(cwd(), pathToFile);

@@ -1,7 +1,7 @@
 import { parseNodeArg } from "./utils/parse.js";
 import { homedir, EOL } from "os";
 import { env, chdir, cwd, stdin, stdout, exit } from "process";
-import { handle } from "./handleCommand.js";
+import { handle } from "./commandDispatcher.js";
 import readline from "readline";
 
 try {
