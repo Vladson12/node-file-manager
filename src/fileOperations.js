@@ -11,10 +11,10 @@ export const add = async (newFileName) => {
     throw new Error("Invalid input");
   }
 
-  let resolvedFilePath = resolve(cwd(), newFileName);
+  const resolvedFilePath = resolve(cwd(), newFileName);
 
   try {
-    await writeFile(filePath, "", { flag: "wx" });
+    await writeFile(resolvedFilePath, "", { flag: "wx" });
   } catch (err) {
     throw new Error("Operation failed");
   }
@@ -25,7 +25,7 @@ export const cat = async (pathToFile) => {
     throw new Error("Invalid input");
   }
 
-  let resolvedPathToFile = resolve(cwd(), pathToFile);
+  const resolvedPathToFile = resolve(cwd(), pathToFile);
 
   const readStream = fs.createReadStream(resolvedPathToFile, "utf-8");
 
@@ -110,7 +110,7 @@ export const remove = async (pathToFile) => {
     throw new Error("Invalid input");
   }
 
-  let resolvedPathToFile = path.resolve(cwd(), pathToFile);
+  const resolvedPathToFile = path.resolve(cwd(), pathToFile);
 
   try {
     await rm(resolvedPathToFile);
