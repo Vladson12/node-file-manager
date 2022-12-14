@@ -88,19 +88,19 @@ export const cp = async (pathToFile, pathToNewDirectory) => {
 export const mv = async (pathToFile, pathToNewDirectory) => {
   if (!pathToFile || !pathToNewDirectory) throw new Error("Invalid input");
 
+  const resolvedPathToFile = resolve(cwd(), pathToFile);
+  const resolvedPathToNewDirectory = resolve(
+    cwd(),
+    newDirPath,
+    basename(resolvedPathToFile)
+  );
+
+  if (resolvedPathToFile === resolvedPathToNewDirectory) return;
+
+  const readStream = fs.createReadStream(resolvedPathToFile);
+  const writeStream = fs.createWriteStream(resolvedPathToNewDirectory);
+
   try {
-    const resolvedPathToFile = resolve(cwd(), pathToFile);
-    const resolvedPathToNewDirectory = resolve(
-      cwd(),
-      newDirPath,
-      basename(resolvedPathToFile)
-    );
-
-    if (resolvedPathToFile === resolvedPathToNewDirectory) return;
-
-    const readStream = fs.createReadStream(resolvedPathToFile);
-    const writeStream = fs.createWriteStream(resolvedPathToNewDirectory);
-
     await pipeline(readStream, writeStream);
     await rm(resolvedPathToFile);
   } catch (err) {
