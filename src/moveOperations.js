@@ -11,12 +11,11 @@ export const moveUp = () => {
 };
 
 export const cd = (pathToDirectory) => {
-  let resolvedPathToDirectory;
-  try {
-    resolvedPathToDirectory = resolve(cwd(), pathToDirectory);
-  } catch (err) {
+  if (!pathToDirectory) {
     throw new Error("Invalid input");
   }
+
+  const resolvedPathToDirectory = resolve(cwd(), pathToDirectory);
 
   try {
     chdir(resolvedPathToDirectory);
