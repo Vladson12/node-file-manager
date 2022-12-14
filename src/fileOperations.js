@@ -53,8 +53,6 @@ export const rn = async (pathTofile, newFilename) => {
 
   const resolvedPathToFile = resolve(cwd(), pathTofile);
   const resolvedNewPath = resolve(resolvedPathToFile, "..", newFilename);
-  console.log(resolvedPathToFile);
-  console.log(resolvedNewPath);
 
   try {
     await access(resolvedNewPath);
@@ -88,7 +86,6 @@ export const cp = async (pathToFile, pathToNewDirectory) => {
 
     await pipeline(readStream, writeStream);
   } catch (err) {
-    console.log(err);
     throw new Error("Operation failed");
   }
 };
@@ -112,7 +109,6 @@ export const mv = async (pathToFile, pathToNewDirectory) => {
     await pipeline(readStream, writeStream);
     await rm(resolvedPathToFile);
   } catch (err) {
-    console.log(err);
     throw new Error("Operation failed");
   }
 };

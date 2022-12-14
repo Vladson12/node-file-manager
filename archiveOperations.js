@@ -14,9 +14,6 @@ export const compress = async (pathToFile, pathToDestination) => {
     basename(resolvedPathToFile) + ".br"
   );
 
-  console.log(resolvedPathToFile);
-  console.log(resolvedPathToDestination);
-
   const readStream = fs.createReadStream(resolvedPathToFile);
   const writeStream = fs.createWriteStream(resolvedPathToDestination);
   const brotliCompress = createBrotliCompress();
@@ -38,9 +35,6 @@ export const decompress = async (pathToFile, pathToDestination) => {
     parse(resolvedPathToFile).name
   );
 
-  console.log(resolvedPathToFile);
-  console.log(resolvedPathToDestination);
-
   const readStream = fs.createReadStream(resolvedPathToFile);
   const writeStream = fs.createWriteStream(resolvedPathToDestination);
   const brotliDecompress = createBrotliDecompress();
@@ -48,7 +42,6 @@ export const decompress = async (pathToFile, pathToDestination) => {
   try {
     await pipeline(readStream, brotliDecompress, writeStream);
   } catch (err) {
-    console.log(err);
     throw new Error("Operation failed");
   }
 };

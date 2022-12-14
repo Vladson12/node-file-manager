@@ -8,9 +8,6 @@ import { EOL } from "os";
 
 export const handle = async (commandLine) => {
   const [command, ...args] = parseFileManagerCommandAndArgs(commandLine);
-  console.log(`COMMAND: [${command}]`);
-  console.log("ARGS:");
-  console.log(args);
 
   switch (command) {
     case ".exit":
