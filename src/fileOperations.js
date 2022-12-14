@@ -7,12 +7,11 @@ import fsProm from "fs/promises";
 import { contentType } from "./utils/fsUtil.js";
 
 export const add = async (newFileName) => {
-  let resolvedFilePath;
-  try {
-    resolvedFilePath = resolve(cwd(), newFileName);
-  } catch (err) {
+  if (!newFileName) {
     throw new Error("Invalid input");
   }
+
+  let resolvedFilePath = resolve(cwd(), newFileName);
 
   try {
     await writeFile(filePath, "", { flag: "wx" });
