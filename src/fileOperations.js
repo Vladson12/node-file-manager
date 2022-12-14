@@ -109,22 +109,17 @@ export const mv = async (pathToFile, pathToNewDirectory) => {
 };
 
 export const remove = async (pathToFile) => {
-  return new Promise(async (resolve, reject) => {
-    let resolvedPathToFile;
-    try {
-      resolvedPathToFile = path.resolve(cwd(), pathToFile);
-    } catch (err) {
-      return reject(new Error("Invalid input"));
-    }
+  if (!pathToFile) {
+    throw new Error("Invalid input");
+  }
 
-    try {
-      await rm(resolvedPathToFile);
-    } catch (err) {
-      return reject(new Error("Operation failed"));
-    }
+  let resolvedPathToFile = path.resolve(cwd(), pathToFile);
 
-    return resolve();
-  });
+  try {
+    await rm(resolvedPathToFile);
+  } catch (err) {
+    throw new Error("Operation failed");
+  }
 };
 
 export const ls = async () => {
