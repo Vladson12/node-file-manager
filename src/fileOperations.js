@@ -6,21 +6,18 @@ import { pipeline } from "stream/promises";
 import fsProm from "fs/promises";
 import { contentType } from "./utils/fsUtil.js";
 
-export const add = async (files) => {
-  let filePaths;
+export const add = async (newFileName) => {
+  let resolvedFilePath;
   try {
-    filePaths = files.map((file) => resolve(cwd(), file));
+    resolvedFilePath = resolve(cwd(), newFileName);
   } catch (err) {
     throw new Error("Invalid input");
   }
 
   try {
-    const promises = filePaths.map((filePath) =>
-      writeFile(filePath, "", { flag: "wx" })
-    );
-    await Promise.allSettled(promises);
+    await writeFile(filePath, "", { flag: "wx" });
   } catch (err) {
-    throw new Error(`Operation failed`);
+    throw new Error("Operation failed");
   }
 };
 

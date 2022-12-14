@@ -28,7 +28,7 @@ export const handle = async (commandLine) => {
       await ls();
       break;
     case "add":
-      if (args.length === 0) {
+      if (args.length !== 1) {
         throw new Error("Invalid input");
       }
       await add(...args);
