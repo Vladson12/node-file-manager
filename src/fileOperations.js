@@ -112,7 +112,7 @@ export const mv = async (pathToFile, pathToNewDirectory) => {
   const resolvedPathToFile = resolve(cwd(), pathToFile);
   const resolvedPathToNewDirectory = resolve(
     cwd(),
-    newDirPath,
+    pathToNewDirectory,
     basename(resolvedPathToFile)
   );
 
