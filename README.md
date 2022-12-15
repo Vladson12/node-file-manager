@@ -58,12 +58,12 @@ $ npm start -- --username=your_username
   ```bash
   rn path_to_file new_filename
   ```
-  The operation fails if `new_file_name` already exists.
+  The operation overwrites `new_file_name` if it already exists.
   - Copy file:
   ```bash
   cp path_to_file path_to_new_directory
   ```
-  `path_to_new_directory` can be ether a directory or a file. If it's a directory, the operation copies `path_to_file` to it with the same name. If it's a file, the operation creates it and fills with `path_to_file` content.
+  `path_to_new_directory` can be ether a directory or a file. If it's a directory, the operation copies `path_to_file` to it with the same name. If it's a file, the operation fills it with `path_to_file` content.
   - Move file:
   ```bash
   mv path_to_file path_to_new_directory
