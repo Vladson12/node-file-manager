@@ -2,8 +2,8 @@ import { moveUp, cd } from "./moveOperations.js";
 import { add, cat, rn, cp, mv, remove, ls } from "./fileOperations.js";
 import { parseFileManagerCommandAndArgs } from "./utils/parse.js";
 import { os } from "./osOperations.js";
-import { hashFile } from "../hashOperation.js";
-import { compress, decompress } from "../archiveOperations.js";
+import { hashFile } from "./hashOperation.js";
+import { compress, decompress } from "./archiveOperations.js";
 import { EOL } from "os";
 
 export const handle = async (commandLine) => {
