@@ -134,7 +134,7 @@ export const remove = async (pathToFile) => {
     throw new Error("Invalid input");
   }
 
-  const resolvedPathToFile = path.resolve(cwd(), pathToFile);
+  const resolvedPathToFile = resolve(cwd(), pathToFile);
 
   try {
     await rm(resolvedPathToFile);
