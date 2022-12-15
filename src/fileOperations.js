@@ -73,9 +73,6 @@ export const cp = async (pathToFile, pathToNewDirectory) => {
   const resolvedPathToFile = resolve(cwd(), pathToFile);
   let resolvedPathToNewDirectory = resolve(cwd(), pathToNewDirectory);
 
-  console.log(resolvedPathToFile);
-  console.log(resolvedPathToNewDirectory);
-
   if (
     [basename(resolvedPathToFile), ""].includes(
       relative(resolvedPathToNewDirectory, resolvedPathToFile)
