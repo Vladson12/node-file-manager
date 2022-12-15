@@ -1,9 +1,16 @@
-import path, { resolve, basename } from "path";
+import { resolve, basename, relative } from "path";
 import { cwd } from "process";
 import fs from "fs";
-import { rename, access, writeFile, rm } from "fs/promises";
+import {
+  readdir,
+  stat,
+  rename,
+  access,
+  writeFile,
+  rm,
+  constants,
+} from "fs/promises";
 import { pipeline } from "stream/promises";
-import fsProm from "fs/promises";
 import { contentType } from "./utils/fsUtil.js";
 
 export const add = async (newFileName) => {
@@ -64,21 +71,38 @@ export const cp = async (pathToFile, pathToNewDirectory) => {
   if (!pathToFile || !pathToNewDirectory) throw new Error("Invalid input");
 
   const resolvedPathToFile = resolve(cwd(), pathToFile);
-  const resolvedPathToNewDirectory = resolve(
-    cwd(),
-    pathToNewDirectory,
-    basename(resolvedPathToFile)
-  );
+  let resolvedPathToNewDirectory = resolve(cwd(), pathToNewDirectory);
 
-  if (resolvedPathToFile === resolvedPathToNewDirectory) return;
+  console.log(resolvedPathToFile);
+  console.log(resolvedPathToNewDirectory);
 
-  const readStream = fs.createReadStream(resolvedPathToFile);
-  const writeStream = fs.createWriteStream(resolvedPathToNewDirectory);
+  if (
+    [basename(resolvedPathToFile), ""].includes(
+      relative(resolvedPathToNewDirectory, resolvedPathToFile)
+    )
+  ) {
+    return;
+  }
+
+  let readStream = fs.createReadStream(resolvedPathToFile);
+  let writeStream = fs.createWriteStream(resolvedPathToNewDirectory);
 
   try {
     await pipeline(readStream, writeStream);
   } catch (err) {
-    throw new Error("Operation failed");
+    if (err.errno === -4068) {
+      readStream = fs.createReadStream(resolvedPathToFile);
+      writeStream = fs.createWriteStream(
+        resolve(resolvedPathToNewDirectory, basename(resolvedPathToFile))
+      );
+      try {
+        pipeline(readStream, writeStream);
+      } catch {
+        throw new Error("Operation failed");
+      }
+    } else {
+      throw new Error("Operation failed");
+    }
   }
 };
 
@@ -121,13 +145,13 @@ export const remove = async (pathToFile) => {
 
 export const ls = async () => {
   try {
-    const content = await fsProm.readdir(cwd());
+    const content = await readdir(cwd());
     const resArr = [];
 
     for (const item of content) {
       try {
-        const name = path.basename(item);
-        const type = contentType(await fsProm.stat(resolve(cwd(), item)));
+        const name = basename(item);
+        const type = contentType(await stat(resolve(cwd(), item)));
         resArr.push({ name, type });
       } catch {
         continue;
