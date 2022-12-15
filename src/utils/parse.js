@@ -34,7 +34,7 @@ export const parseFileManagerCommandAndArgs = (line) => {
           break;
         }
         if (['"', "'"].includes(nextSymbol)) {
-          throw new Error("Invalid input " + j);
+          throw new Error("Invalid input");
         }
       }
 
@@ -53,7 +53,7 @@ export const parseFileManagerCommandAndArgs = (line) => {
           break;
         }
         if (j === currentLine.length - 1 || nextSymbol === "'") {
-          throw new Error("Invalid input " + j);
+          throw new Error("Invalid input");
         }
       }
 
@@ -72,7 +72,7 @@ export const parseFileManagerCommandAndArgs = (line) => {
           break;
         }
         if (j === currentLine.length - 1 || nextSymbol === '"') {
-          throw new Error("Invalid input " + j);
+          throw new Error("Invalid input ");
         }
       }
 
