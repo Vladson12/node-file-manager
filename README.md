@@ -103,7 +103,9 @@ $ npm start -- --username=your_username
   ```bash
   compress path_to_file path_to_destination
   ```
+  The operation creates a new archive file with `.br` extension. If file with the same name already exists, the operation overwrites it.
   - Decompress file:
   ```bash
   decompress path_to_file path_to_destination
   ```
+  The operation creates a new file from `.br` archive file. If file with the same name already exists, the operation overwrites it.
