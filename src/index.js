@@ -1,29 +1,33 @@
-import { parseArg } from "./utils/parseArg.js";
+import { parseNodeArg } from "./utils/parse.js";
 import { homedir, EOL } from "os";
 import { env, chdir, cwd, stdin, stdout, exit } from "process";
-import { pipeline } from "stream/promises";
-import { handle } from "./handleCommand.js";
+import { handle } from "./commandDispatcher.js";
+import readline from "readline";
 
 try {
-  env.USERNAME = parseArg("username");
+  env.USERNAME = parseNodeArg("username");
 } catch (err) {
   console.log(
     "Please try again by passing username correclty in following way: --username=your_username"
   );
-  process.exit(0);
+  exit(0);
 }
 
-console.log(`${EOL}Welcome to the File Manager, ${env.USERNAME}!${EOL}`);
+const rl = readline.createInterface({
+  input: stdin,
+  output: stdout,
+});
+
+console.log(`Welcome to the File Manager, ${env.USERNAME}!${EOL}`);
 chdir(homedir());
 console.log(`You're currently in ${cwd()}`);
 
-pipeline(stdin, handle, stdout);
+rl.on("line", (command) => {
+  handle(command)
+    .catch((err) => console.log(err.message))
+    .finally(() => console.log(`${EOL}You're currently in ${cwd()}`));
+});
 
-const exitEvents = ["beforeexit", "SIGINT"];
-
-exitEvents.forEach((exitEvent) => {
-  process.on(exitEvent, () => {
-    console.log(`${EOL}Thank you for using File Manager, ${env.USERNAME}!`);
-    exit();
-  });
+process.on("exit", () => {
+  console.log(`${EOL}Thank you for using File Manager, ${env.USERNAME}!`);
 });
