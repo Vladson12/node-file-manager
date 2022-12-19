@@ -40,6 +40,7 @@ $ npm start -- --username=your_username
   ```bash
   cd path_to_directory
   ```
+  You can use `cd ~` to get to user's home directory.
   - Print in console list of all files and folders in current directory:
   ```bash
   ls
